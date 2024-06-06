@@ -2,19 +2,35 @@ package com.example.airline_api.models;
 
 public class BookingDTO {
 
-    private int seatNumber;
-    private String mealPreference;
-    private long passengerId;
-    private long flightId;
+        private Long passengerId;
+        private Long flightId;
+        private int seatNumber;
+        private String mealPreference;
 
-    public BookingDTO(int seatNumber, String mealPreference, long passengerId, long flightId) {
-        this.seatNumber = seatNumber;
-        this.mealPreference = mealPreference;
+    public BookingDTO(long flightId, long passengerId, int seatNumber, String mealPreference) {
         this.passengerId = passengerId;
         this.flightId = flightId;
+        this.seatNumber = seatNumber;
+        this.mealPreference = mealPreference;
     }
 
     public BookingDTO() {
+    }
+
+    public Long getPassengerId() {
+        return passengerId;
+    }
+
+    public void setPassengerId(Long passengerId) {
+        this.passengerId = passengerId;
+    }
+
+    public Long getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(Long flightId) {
+        this.flightId = flightId;
     }
 
     public int getSeatNumber() {
@@ -32,21 +48,4 @@ public class BookingDTO {
     public void setMealPreference(String mealPreference) {
         this.mealPreference = mealPreference;
     }
-
-    public long getPassengerId() {
-        return passengerId;
-    }
-
-    public void setPassengerId(long passengerId) {
-        this.passengerId = passengerId;
-    }
-
-    public long getFlightId() {
-        return flightId;
-    }
-
-    public void setFlightId(long flightId) {
-        this.flightId = flightId;
-    }
-
 }

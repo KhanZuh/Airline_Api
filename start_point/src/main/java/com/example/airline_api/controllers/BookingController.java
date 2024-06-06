@@ -1,6 +1,7 @@
 package com.example.airline_api.controllers;
 
 import com.example.airline_api.models.Booking;
+import com.example.airline_api.models.BookingDTO;
 import com.example.airline_api.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,32 +16,31 @@ import java.util.Optional;
 public class BookingController {
 
     @Autowired
-    private BookingService bookingService;
+    BookingService bookingService;
 
-    // TODO: Display all bookings
+    // Display all bookings
     @GetMapping
     public ResponseEntity<List<Booking>> getAllBookings(){
-        return null;
+        List<Booking> bookings = bookingService.getAllBookings();
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     // Add details of a new booking
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<Booking> bookPassengerOnFlight(
-            @PathVariable Long passengerId,
-            @PathVariable Long flightId,
-            @RequestBody Booking booking) {
-        // Call the bookPassengerOnFlight method from the BookingService
-        Optional<Booking> savedBookingOptional = bookingService.bookPassengerOnFlight(passengerId, flightId, booking);
+    @PostMapping
+    public ResponseEntity<Long> bookPassengerOnFlight(@RequestBody BookingDTO bookingDTO) {
+        // Call the service method to book the passenger on the flight
+        Long bookingId = bookingService.bookPassengerOnFlight(bookingDTO);
 
-        // Check if the saved booking is present
-        if (savedBookingOptional.isPresent()) {
-            // Return the saved booking with a 201 Created status
-            return new ResponseEntity<>(savedBookingOptional.get(), HttpStatus.CREATED);
+        // Check if the booking was successful
+        if (bookingId != null) {
+            // Return a response with the created booking ID and a status code of 201 CREATED
+            return new ResponseEntity<>(bookingId, HttpStatus.CREATED);
         } else {
-            // Return a 404 Not Found status if the passenger or flight is not found
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            // Return a response with a status code of 400 BAD REQUEST if the booking failed
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     // TODO: Extension - Update passenger meal preference
     @PatchMapping
